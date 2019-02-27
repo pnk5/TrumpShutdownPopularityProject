@@ -24,6 +24,7 @@ def string_to_date(instring):
 
 
 dfdjdata["Date"] = dfdjdata.apply(lambda row: string_to_date(row["Date"]), axis=1)
+dfrudata["Date"] = dfrudata.apply(lambda row: string_to_date(row["Date"]), axis=1)
 
 print(dfdjdata)
 
@@ -69,14 +70,15 @@ def get_avg_valuation(indf, date1, date2):
                                 pynewdate2 = pydate2 - timedelta(days=3)
         else:
             pynewdate2 = date2.to_pydatetime()
-    return (indf.loc[indf["Date"] == pd.to_datetime(pynewdate1)]["Close"].values[0] + indf.loc[indf["Date"] == pd.to_datetime(pynewdate2)]["Close"].values[0]) / 2
+    return (indf.loc[indf["Date"] == pd.to_datetime(pynewdate1)]["Close"].values[0]
+            + indf.loc[indf["Date"] == pd.to_datetime(pynewdate2)]["Close"].values[0]) / 2
 
 
 mutdata["djavg"] = mutdata.apply(lambda row: get_avg_valuation(dfdjdata, row["startdate"], row["enddate"]), axis=1)
 mutdata["ruavg"] = mutdata.apply(lambda row: get_avg_valuation(dfrudata, row["startdate"], row["enddate"]), axis=1)
 
 
-#
+# Old, bad way of doing it
 # for index, row in dfpolldata.iterrows():
 #     mutdata.at["djavg", index] = 0
 #     print(index)
@@ -89,5 +91,8 @@ mutdata["ruavg"] = mutdata.apply(lambda row: get_avg_valuation(dfrudata, row["st
 # print(pd.to_datetime(dfdjdata["Date"][1]))
 # print(type(dfdjdata["Date"][1]))
 
-print(mutdata)
-print(mutdata["djavg"])
+# print(mutdata)
+# print(mutdata["djavg"])
+# print(mutdata["ruavg"])
+
+mutdata.to_excel("poll_and_avg.xlsx")
