@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from datetime import datetime, timedelta
 
 wd = os.getcwd()
 
@@ -26,7 +27,42 @@ print(dfdjdata)
 
 print(dfdjdata["Date"][1])
 def get_avg_valuation(indf, date1, date2):
-    return (indf.loc[indf["Date"] == date1]["Close"] + indf.loc[indf["Date"] == date2]["Close"]) / 2.0
+    quote1 = indf.loc[indf["Date"] == date1]["Close"]
+    quote2 = indf.loc[indf["Date"] == date2]["Close"]
+    if quote1.size > 0 and quote2.size > 0:
+        return (quote1.values[0] + quote2.values[0]) / 2
+    else:
+        if quote1.size == 0:
+            pydate1 = date1.to_pydatetime()
+            pynewdate1 = pydate1 - timedelta(days=1)
+            if indf.loc[indf["Date"] == pd.to_datetime(pynewdate1)]["Close"].size == 0:
+                pynewdate1 = pydate1 + timedelta(days=1)
+                if indf.loc[indf["Date"] == pd.to_datetime(pynewdate1)]["Close"].size == 0:
+                    pynewdate1 = pydate1 + timedelta(days=2)
+                    if indf.loc[indf["Date"] == pd.to_datetime(pynewdate1)]["Close"].size == 0:
+                        pynewdate1 = pydate1 - timedelta(days=2)
+                        if indf.loc[indf["Date"] == pd.to_datetime(pynewdate1)]["Close"].size == 0:
+                            pynewdate1 = pydate1 + timedelta(days=3)
+                            if indf.loc[indf["Date"] == pd.to_datetime(pynewdate1)]["Close"].size == 0:
+                                pynewdate1 = pydate1 - timedelta(days=3)
+        else:
+            pynewdate1 = date1.to_pydatetime()
+        if quote2.size == 0:
+            pydate2 = date2.to_pydatetime()
+            pynewdate2 = pydate2 - timedelta(days=1)
+            if indf.loc[indf["Date"] == pd.to_datetime(pynewdate2)]["Close"].size == 0:
+                pynewdate2 = pydate2 + timedelta(days=1)
+                if indf.loc[indf["Date"] == pd.to_datetime(pynewdate2)]["Close"].size == 0:
+                    pynewdate2 = pydate2 + timedelta(days=2)
+                    if indf.loc[indf["Date"] == pd.to_datetime(pynewdate2)]["Close"].size == 0:
+                        pynewdate2 = pydate2 - timedelta(days=2)
+                        if indf.loc[indf["Date"] == pd.to_datetime(pynewdate2)]["Close"].size == 0:
+                            pynewdate2 = pydate2 + timedelta(days=3)
+                            if indf.loc[indf["Date"] == pd.to_datetime(pynewdate2)]["Close"].size == 0:
+                                pynewdate2 = pydate2 - timedelta(days=3)
+        else:
+            pynewdate2 = date2.to_pydatetime()
+    return (indf.loc[indf["Date"] == pd.to_datetime(pynewdate1)]["Close"].values[0] + indf.loc[indf["Date"] == pd.to_datetime(pynewdate2)]["Close"].values[0]) / 2
 
 
 mutdata["djavg"] = mutdata.apply(lambda row: get_avg_valuation(dfdjdata, row["startdate"], row["enddate"]), axis=1)
@@ -46,3 +82,4 @@ mutdata["djavg"] = mutdata.apply(lambda row: get_avg_valuation(dfdjdata, row["st
 # print(type(dfdjdata["Date"][1]))
 
 print(mutdata)
+print(mutdata["djavg"])
