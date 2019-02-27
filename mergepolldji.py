@@ -26,6 +26,11 @@ dfdjdata["Date"] = dfdjdata.apply(lambda row: string_to_date(row["Date"]), axis=
 print(dfdjdata)
 
 print(dfdjdata["Date"][1])
+
+"""Averages the DJIA valuations at the beginning and end of each polling period, looking ahead or behind three days
+if the market was closed on one of the end dates"""
+
+
 def get_avg_valuation(indf, date1, date2):
     quote1 = indf.loc[indf["Date"] == date1]["Close"]
     quote2 = indf.loc[indf["Date"] == date2]["Close"]
