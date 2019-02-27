@@ -1,5 +1,5 @@
 library("readxl")
-polldata <- read_excel("C:\\Users\\pnkid\\PycharmProjects\\TrumpShutdownPopularityProject\\poll_and_avg.xlsx")
+polldata <- read_excel("poll_and_avg.xlsx")
 nostraddle <- subset(polldata, { as.Date(startdate) >= as.Date("2018-11-17") & as.Date(enddate) < as.Date("2018-12-22") } | (as.Date(startdate) >= as.Date("2018-12-22") & as.Date(enddate) <= as.Date("2019-01-25")) | as.Date(startdate) > as.Date("2019-01-25"))
 state_nostraddle = within(nostraddle, { period = ifelse(as.Date(enddate) < as.Date("2018-12-22"), 0, ifelse(as.Date(enddate) >= as.Date("2018-12-22") & as.Date(enddate) <= as.Date("2019-1-25"), 1, 2)) })
 before_during <- subset(state_nostraddle, period == 0 | period == 1)
