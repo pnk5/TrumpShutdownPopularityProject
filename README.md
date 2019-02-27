@@ -6,4 +6,4 @@ Secured poll data from fivethirtyeight in appdata.xlsx, then historical Dow Jone
 #### 2. Merge market data and polling data
 Averaged the market indicators at the beginning and end of each polling period, and the nearest day if the market was closed on that particular day, script found in mergepolldji.py
 #### 3. Perform regressions
-Perform linear regressions on approval rating vs government state (shutdown/open) and multivariate linear regressions on approval rating vs government state with the addition of dow jones industrial data and russell 2000 data.
+Perform linear regressions on approval rating vs government state (shutdown/open) and multivariate linear regressions on approval rating vs government state with the addition of dow jones industrial data and russell 2000 data, script found in Script.R.
