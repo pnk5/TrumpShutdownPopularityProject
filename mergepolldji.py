@@ -6,8 +6,10 @@ wd = os.getcwd()
 
 polldata = "apprate.xlsx"
 djdata = "djdata.csv"
+rudata = "rudata.csv"
 xlpolldata = pd.ExcelFile(polldata)
 dfdjdata = pd.read_csv(djdata)
+dfrudata = pd.read_csv(rudata)
 
 print(xlpolldata.sheet_names)
 
@@ -71,6 +73,7 @@ def get_avg_valuation(indf, date1, date2):
 
 
 mutdata["djavg"] = mutdata.apply(lambda row: get_avg_valuation(dfdjdata, row["startdate"], row["enddate"]), axis=1)
+mutdata["ruavg"] = mutdata.apply(lambda row: get_avg_valuation(dfrudata, row["startdate"], row["enddate"]), axis=1)
 
 
 #
